@@ -1,1 +1,6 @@
 region = "us-east-1"
+profile = "default"
+bucket_name = "sinem-sipahi"
+role_name = "S3-ROLE"
+policy_name = "test_policy"
+attachment = "test_attachment"
