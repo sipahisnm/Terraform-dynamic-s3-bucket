@@ -2,17 +2,17 @@ variable "region" {
   type = string
 }
 variable "profile" {
-  default = "default"
+  type = string
 }
 variable "bucket_name" {
-  default = "sinem-20090000"
+  type = string
 }
 variable "role_name" {
-  default = "S3-ROLE"
+  type = string
 }
 variable "policy_name" {
-  default = "test_policy"
+  type = string
 }
 variable "attachment" {
-  default = "test_attachment"
+  type = string
 }
