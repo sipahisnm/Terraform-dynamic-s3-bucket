@@ -43,9 +43,12 @@ resource "aws_iam_policy" "policy" {
 
 data "aws_iam_policy_document" "read-write-only" {
   statement {
+    sid = "1"
 
     actions = [
       "s3:GetObject",
+      "s3:CreateBucket",
+      "s3:DeleteBucket",
       "s3:ListBucket",
       "s3:*Object"
     ]
