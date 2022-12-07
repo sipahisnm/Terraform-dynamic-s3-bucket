@@ -81,95 +81,17 @@ example, the resource type is aws_instance and the local name is tf-ec2. The pre
 case "aws_instance" automatically tells Terraform that it is managed by the "aws" provider.
 - I created 7 resources for this purpose
    * S3 bucket [aws_s3_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket)
-     ```
-      resource "aws_s3_bucket" "example" {
-        bucket = var.bucket_name
-         }
-      ```
+    
    * S3 bucket policy [aws_s3_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy)
-     ```
-      resource "aws_s3_bucket_policy" "s3-bucket" {
-  bucket = aws_s3_bucket.example.id
-  policy = data.aws_iam_policy_document.read-only.json
-}
-
-data "aws_iam_policy_document" "read-only" {
-  statement {
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "s3:GetObject",
-      "s3:ListBucket",
-    ]
-
-    resources = [
-      aws_s3_bucket.example.arn,
-      "${aws_s3_bucket.example.arn}/*",
-    ]
-  }
-}
-
-     ```
+     
    * IAM Role [aws_iam_role](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)
-     ```
-        resource "aws_iam_role" "s3_access_role" {
-          name               = var.role_name
-          assume_role_policy = "${file("iamrole.json")}"
-        }
-      ```
+     
    * IAM Policy [aws_iam_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy)
-      ```
-       resource "aws_iam_policy" "policy" {
-  name        = var.policy_name
-  description = "My test policy"
-  policy = data.aws_iam_policy_document.read-write-only.json 
-}
-
-
-data "aws_iam_policy_document" "read-write-only" {
-  statement {
-    sid = "1"
-
-    actions = [
-      "s3:GetObject",
-      "s3:CreateBucket",
-      "s3:DeleteBucket",
-      "s3:ListBucket",
-      "s3:*Object"
-    ]
-
-    resources = [
-      aws_s3_bucket.example.arn,
-      "${aws_s3_bucket.example.arn}/*",
-    ]
-  }
-}  
-
-
-       ```     
+     
    * Attacment [aws_iam_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy_attachment)
-       ```
-       resource "aws_iam_policy_attachment" "test-attach" {
-         name       = var.attachment
-         roles      = ["${aws_iam_role.s3_access_role.name}"]
-         policy_arn = "${aws_iam_policy.policy.arn}"
-        } 
-       ```
-
+      
    * S3 object [aws_s3_object](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object)  (I created 2 object )
-       ```
-          resource "aws_s3_object" "examplebucket_object" {
-             key    = "/sinem.txt"
-             bucket = aws_s3_bucket.example.id
-             source = "sinem.txt"
-             content_type  = "text/html"
-             #acl = "public-read" # if we want to make read permission only for some objetc in the bucket we can use inline acl
-
-            }
-        ```    
+     
    
 - Go to the **S3-Terraform** directory and run the terraform comment
  ```
